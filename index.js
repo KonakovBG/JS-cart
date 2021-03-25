@@ -4,12 +4,34 @@ ready();
 
 function ready(){
 	var buttons = document.getElementsByClassName('addButton');
-
 	for (var i = 0; i < buttons.length; i++) {
 		var button = buttons[i];
 
 		button.addEventListener('click',addProduct);
 	}
+}
+
+var ShopProducts = {
+	Apple: {name:'Apple', price:2, quantity:15},
+	Pear: {name:'Pear', price:3, quantity:47},
+	Grape: {name:'Grape', price:5, quantity:25},
+};
+
+const cart = { items: []};
+
+PrintPorducts();
+
+function PrintPorducts(){
+	var productsLength = Object.entries(ShopProducts).length;
+
+	for (var i = 0; i < productsLength; i++) {
+		document.getElementsByClassName('name')[i].innerHTML = Object.entries(ShopProducts)[i][1].name;
+
+		document.getElementsByClassName('price')[i].innerHTML = Object.entries(ShopProducts)[i][1].price;
+		
+		document.getElementsByClassName('stock-left')[i].innerHTML = Object.entries(ShopProducts)[i][1].quantity;
+	}
+	return true;
 }
 
 function addProduct(event){
@@ -19,65 +41,51 @@ function addProduct(event){
 
 	var itemName = ShopItem.getElementsByClassName('name')[0].innerText;
 
-	var itemPrice = ShopItem.getElementsByClassName('price')[0].innerText;
-
 	var itemQuantity = ShopItem.getElementsByClassName('quantity')[0].value;
 
-	var ProductQuantity = ShopItem.getElementsByClassName('stock-left')[0].innerText;
+	var productPrice = (ShopProducts[itemName].price)*itemQuantity;
 
-	var ProductLeft = +ProductQuantity - +itemQuantity;
+	var productToAdd = {name: itemName, quantity: itemQuantity, price: productPrice};
 
-	if(quantityValidation(ShopItem) == true){
-		addItemToCart(itemName,itemPrice,itemQuantity);
+	if(ShopProducts.hasOwnProperty(itemName) === true){	
+		if(itemQuantity <= ShopProducts[itemName].quantity){
+			var productDiv = document.createElement('div');
+
+			productDiv.classList.add('product_row');
+
+			cart.items.push(productToAdd);
+
+			productDiv.append(Object.values(productToAdd)," ");
+
+			$('#content_cart').append(productDiv);
+
+			$('#cart_price-amount').html("Final Price: " + cartFinalPrice() + "$");
+
+			ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
+
+			PrintPorducts();			
+		}else{
+			alert("Not enough quantity!");
+
+			return false;
+		}
+				
 	}
-}
 
-function addItemToCart(name,price,quantity){
-	var product = document.createElement('div');
-
-	product.classList.add('cart_product');
-
-	var productPrice = price*quantity;	
-
-	product.append(name + " " + price + " " + quantity + " - " + productPrice + " lv");
-
-	$('#content_cart').append(product);
-
-	cartFinalPrice();	
+	cartFinalPrice();
 }
 
 function cartFinalPrice(){
-	var products = document.getElementsByClassName('cart_product');
-
 	var total = 0;
 
-	for (var i = 0; i < products.length; i++) {
-		var productPrice = products[i].innerText.split(' ');
+	for (var i = 0; i < cart.items.length; i++) {
+		var productPrice = cart.items[i].price;
 
-		total = +total + +productPrice[4];
+		total = +total + +productPrice;
 	}
 
-	document.getElementById('cart_price-amount').innerHTML = "Final Price: " + total;
+	return total;
 }
 
-function quantityValidation(input){
-	var stockLeft = input.getElementsByClassName('stock-left')[0].innerText;
 
-	var itemQuantity = input.getElementsByClassName('quantity')[0].value;
-
-	var ProductQuantity = input.getElementsByClassName('stock-left')[0].innerText;
-
-	var ProductLeft = +ProductQuantity - +itemQuantity;
-
-	if(+stockLeft < input.getElementsByClassName('quantity')[0].value){
-		alert("Not enough product!");
-
-		return false;
-	} else{
-		input.getElementsByClassName('stock-left')[0].innerText = ProductLeft;
-
-		return true;
-	}
-	
-}	
 });

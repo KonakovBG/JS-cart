@@ -1,4 +1,10 @@
 #content_cart{
-	width: 100%;
+	width: 800px;
 	height: 500px;
+	margin: auto;
+	margin-top: 100px;
+}
+#content_cart h1{
+	font-size: 40px;
+	position: relative; left: 360px;
 }
