@@ -55,11 +55,11 @@ function addProduct(event){
 
 			cart.items.push(productToAdd);
 
-			productDiv.append(Object.values(productToAdd)," ");
+			productDiv.append(Object.values(productToAdd));
 
-			$('#content_cart').append(productDiv);
+			$('#content_cart').append("",productDiv);
 
-			$('#cart_price-amount').html("Final Price: " + cartFinalPrice() + "$");
+			$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
 
 			ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
 
