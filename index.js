@@ -50,9 +50,9 @@ function addProduct(event){
 
 	var itemName = ShopItem.getElementsByClassName('name')[0].innerText;
 
-	var itemQuantity = ShopItem.getElementsByClassName('quantity')[0].value;
+	let itemQuantity = ShopItem.getElementsByClassName('quantity')[0].value;
 
-	var itemImage = ShopItem.getElementsByClassName('image').src;
+	var itemImage = ShopItem.getElementsByClassName('image')[0].src;
 
 	var productPrice = (ShopProducts[itemName].price)*itemQuantity;
 
@@ -60,48 +60,70 @@ function addProduct(event){
 
 	if(ShopProducts.hasOwnProperty(itemName) === true){	
 		if(itemQuantity <= ShopProducts[itemName].quantity){
-			var productDiv = document.createElement('div');
+			if(ifProductAlreadyAdded(itemName) === true){
+				var productDiv = document.createElement('div');
 
-			productDiv.classList.add('product_row');
+				productDiv.classList.add('product_row');
 
-			var productDivRow = `
-			<tr id="product">         
-	            <td class="px-6 py-4 whitespace-nowrap">
-	            	<div class="text-sm text-gray-900" id="name-cart" width="140">${productToAdd.name}</div>
-	            </td>
-	            <td class="px-6 py-4 whitespace-nowrap">
-	               	<div class="text-sm text-gray-900" id ="quantity-cart" >${productToAdd.quantity}</div>
-	            </td>
-	            <td class="px-6 py-4 whitespace-nowrap">
-	                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" id="price-cart" >
-	                  ${productToAdd.price}
-	                </span>
-	            </td>
-	            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-	                <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart">Remove</button>
-	            </td>              
-            </tr>`;
+				var productDivRow = `
+				<tr id="product">         
+		            <td class="px-6 py-4 whitespace-nowrap">
+		            	<div class="text-sm text-gray-900 name" id="name-cart" width="140">${productToAdd.name}</div>
+		            </td>
+		            <td class="px-6 py-4 whitespace-nowrap">
+		               	<div class="text-sm text-gray-900" id ="quantity-cart" >${productToAdd.quantity}</div>
+		            </td>
+		            <td class="px-6 py-4 whitespace-nowrap">
+		                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" id="price-cart" >
+		                  ${productToAdd.price}
+		                </span>
+		            </td>
+		            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+		                <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart">Remove</button>
+		            </td>              
+	            </tr>`;
 
-            productDiv.innerHTML = productDivRow;
+	            productDiv.innerHTML = productDivRow;
 
-			cart.items.push(productToAdd);
+				cart.items.push(productToAdd);
 
-			$('#content_cart').append("",productDiv);
+				$('#content_cart').append("",productDiv);
 
-			$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
+				$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
 
-			ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
+				ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
 
-			PrintPorducts();			
-		}else{
-			alert("Not enough quantity!");
+				cartFinalPrice();
+				PrintPorducts();			
+			} else{
+				for (var i = 0; i < cart.items.length; i++) {
+					if(cart.items[i].name === itemName){
 
-			return false;
-		}
-				
+						cart.items[i].quantity = Number(cart.items[i].quantity) + Number(itemQuantity);
+
+						cart.items[i].price = Number(cart.items[i].quantity) + Number(productPrice);
+
+						ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
+
+						document.getElementById('quantity-cart').innerHTML = cart.items[i].quantity;
+
+						document.getElementById('price-cart').innerHTML = cart.items[i].price;
+
+						PrintPorducts();
+
+						cartFinalPrice();
+					}
+				}
+			}
+		} else{
+				alert("Not enough quantity!");
+
+				return false;
+		}							
 	}
 
 	cartFinalPrice();
+	addRemoveButtons();
 }
 
 function cartFinalPrice(){
@@ -116,12 +138,30 @@ function cartFinalPrice(){
 	return total;
 }
 
-addRemoveButtons();
-
 function removeProduct(event){
 	var button = event.target;
 
-	console.log(button);
+	var productToRemove = button.parentElement;
+
+	var productName = productToRemove.getElementsByClassName('name')[0].innerHTML;
+
+	productToRemove.remove();
+
+	for (var i = 0; i < cart.items.length; i++) {
+		if(productName === cart.items[i].name){
+			cart.items.splice(i,1);
+		}
+	}
+
+	cartFinalPrice();
+}
+
+function ifProductAlreadyAdded(input){
+	for (var i = 0; i < cart.items.length; i++) {
+		if(cart.items[i].name === input){
+			return false;
+		} 
+	} return true;
 }
 
 });
