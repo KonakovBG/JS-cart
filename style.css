@@ -8,3 +8,6 @@
 	font-size: 40px;
 	position: relative; left: 360px;
 }
+.product_row{
+	font-size: 20px; display: flex; flex-direction: row; justify-content: space-around;text-align: center;
+}

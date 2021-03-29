@@ -11,6 +11,15 @@ function ready(){
 	}
 }
 
+function addRemoveButtons(){
+	var removeButtons = document.getElementsByClassName('removeButton-cart');
+	for (var i = 0; i < removeButtons.length; i++) {
+		var button = removeButtons[i];
+
+		button.addEventListener('click',removeProduct);
+	}
+}
+
 var ShopProducts = {
 	Apple: {name:'Apple', price:2, quantity:15},
 	Pear: {name:'Pear', price:3, quantity:47},
@@ -43,9 +52,11 @@ function addProduct(event){
 
 	var itemQuantity = ShopItem.getElementsByClassName('quantity')[0].value;
 
+	var itemImage = ShopItem.getElementsByClassName('image').src;
+
 	var productPrice = (ShopProducts[itemName].price)*itemQuantity;
 
-	var productToAdd = {name: itemName, quantity: itemQuantity, price: productPrice};
+	var productToAdd = {name: itemName, quantity: itemQuantity, price: productPrice, image:itemImage};
 
 	if(ShopProducts.hasOwnProperty(itemName) === true){	
 		if(itemQuantity <= ShopProducts[itemName].quantity){
@@ -53,9 +64,27 @@ function addProduct(event){
 
 			productDiv.classList.add('product_row');
 
-			cart.items.push(productToAdd);
+			var productDivRow = `
+			<tr id="product">         
+	            <td class="px-6 py-4 whitespace-nowrap">
+	            	<div class="text-sm text-gray-900" id="name-cart" width="140">${productToAdd.name}</div>
+	            </td>
+	            <td class="px-6 py-4 whitespace-nowrap">
+	               	<div class="text-sm text-gray-900" id ="quantity-cart" >${productToAdd.quantity}</div>
+	            </td>
+	            <td class="px-6 py-4 whitespace-nowrap">
+	                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" id="price-cart" >
+	                  ${productToAdd.price}
+	                </span>
+	            </td>
+	            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+	                <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart">Remove</button>
+	            </td>              
+            </tr>`;
 
-			productDiv.append(Object.values(productToAdd));
+            productDiv.innerHTML = productDivRow;
+
+			cart.items.push(productToAdd);
 
 			$('#content_cart').append("",productDiv);
 
@@ -87,5 +116,12 @@ function cartFinalPrice(){
 	return total;
 }
 
+addRemoveButtons();
+
+function removeProduct(event){
+	var button = event.target;
+
+	console.log(button);
+}
 
 });
