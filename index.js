@@ -111,8 +111,6 @@ function addProduct(event){
 						$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
 
 						PrintPorducts();
-
-						console.log(cart.items[i]);
 					}
 				}
 			}
@@ -145,8 +143,6 @@ function removeProduct(event){
 	var productName = productToRemove.getElementsByClassName('name')[0].innerHTML;
 
 	var productQuantity = productToRemove.getElementsByClassName('quantity-cart')[0].innerHTML;
-
-	console.log(productQuantity);
 
 	productToRemove.remove();
 
