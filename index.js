@@ -71,10 +71,10 @@ function addProduct(event){
 		            	<div class="text-sm text-gray-900 name" id="name-cart" width="140">${productToAdd.name}</div>
 		            </td>
 		            <td class="px-6 py-4 whitespace-nowrap">
-		               	<div class="text-sm text-gray-900" id ="quantity-cart" >${productToAdd.quantity}</div>
+		               	<div class="text-sm text-gray-900 quantity-cart" id ="quantity-cart" >${productToAdd.quantity}</div>
 		            </td>
 		            <td class="px-6 py-4 whitespace-nowrap">
-		                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" id="price-cart" >
+		                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price-cart" id="price-cart" >
 		                  ${productToAdd.price}
 		                </span>
 		            </td>
@@ -93,7 +93,6 @@ function addProduct(event){
 
 				ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
 
-				cartFinalPrice();
 				PrintPorducts();			
 			} else{
 				for (var i = 0; i < cart.items.length; i++) {
@@ -101,17 +100,19 @@ function addProduct(event){
 
 						cart.items[i].quantity = Number(cart.items[i].quantity) + Number(itemQuantity);
 
-						cart.items[i].price = Number(cart.items[i].quantity) + Number(productPrice);
+						cart.items[i].price = cart.items[i].quantity * (ShopProducts[itemName].price);
 
 						ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
 
-						document.getElementById('quantity-cart').innerHTML = cart.items[i].quantity;
+						document.getElementsByClassName('quantity-cart')[i].innerHTML = cart.items[i].quantity;
 
-						document.getElementById('price-cart').innerHTML = cart.items[i].price;
+						document.getElementsByClassName('price-cart')[i].innerHTML = cart.items[i].price;
+
+						$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
 
 						PrintPorducts();
 
-						cartFinalPrice();
+						console.log(cart.items[i]);
 					}
 				}
 			}
@@ -121,8 +122,6 @@ function addProduct(event){
 				return false;
 		}							
 	}
-
-	cartFinalPrice();
 	addRemoveButtons();
 }
 
@@ -145,15 +144,23 @@ function removeProduct(event){
 
 	var productName = productToRemove.getElementsByClassName('name')[0].innerHTML;
 
+	var productQuantity = productToRemove.getElementsByClassName('quantity-cart')[0].innerHTML;
+
+	console.log(productQuantity);
+
 	productToRemove.remove();
 
 	for (var i = 0; i < cart.items.length; i++) {
 		if(productName === cart.items[i].name){
 			cart.items.splice(i,1);
-		}
+		}		
 	}
 
-	cartFinalPrice();
+	ShopProducts[productName].quantity = Number(ShopProducts[productName].quantity) + Number(productQuantity);
+
+	$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
+
+	PrintPorducts();
 }
 
 function ifProductAlreadyAdded(input){
