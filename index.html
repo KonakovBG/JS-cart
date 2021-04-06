@@ -6,129 +6,11 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 </head>
 <body>
-<!-- This example requires Tailwind CSS v2.0+ -->
-<div class="flex flex-col">
-  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thumbnail
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Pricing
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Stock Left
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Quantity
-              </th>
-              <th scope="col" class="relative px-6 py-3">
-                <span class="sr-only">Add</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr id="apple">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full image" src="img/apple.png" alt="">
-                  </div>                 
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 name"></div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price" >
-                  
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 stock-left" ></div>
-              </td>
-
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <input type="number" id="quantity" value="1" name="quantity" min="1" max="1000" class="quantity">
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button class="text-indigo-600 hover:text-indigo-900 addButton">Add</button>
-              </td>              
-            </tr>
-
-            <tr id="pear">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full image" src="img/pear.jpg" alt="">
-                  </div>                 
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 name"></div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price">
-                  
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 stock-left"></div>
-              </td>
-
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <input type="number" id="quantity" value="1" name="quantity" min="1" max="1000" class="quantity">
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button class="text-indigo-600 hover:text-indigo-900 addButton">Add</button>
-              </td>              
-            </tr>
-
-             <tr id="grape">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full image" src="img/grape.jfif" alt="">
-                  </div>                 
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 name"></div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price">
-                  
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 stock-left"></div>
-              </td>
-
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <input type="number" id="quantity" value="1" name="quantity" min="1" max="1000" class="quantity">
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button class="text-indigo-600 hover:text-indigo-900 addButton">Add</button>
-              </td>              
-            </tr>
-            <!-- More items... -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-<div id="content_cart">
-  <h1>Cart</h1>
+  <div id="app">
+  <!-- This example requires Tailwind CSS v2.0+ -->
   <div class="flex flex-col">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -137,34 +19,110 @@
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Thumbnail
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Title
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Quantity
+                  Pricing
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
+                  Stock Left
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Quantity
                 </th>
                 <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Add</span>
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200 cart">              
-              <!-- More items... -->
-            </tbody>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <div id="products">
+                <tr id="product" v-for="product in products" :key="product.id">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img class="h-10 w-10 rounded-full image" src="img/apple.png" alt="">
+                      </div>                 
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 name" id="product-name">{{ product.name }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price" id="product-pricing"> {{ product.price }} </div>               
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 stock-left" id="product-stock" > {{ product.quantity }} </div>
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <input type="number" id="quantity" name="quantity" min="1" max="1000" class="quantity" v-model="product.stock">
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button class="text-indigo-600 hover:text-indigo-900 addButton" @click="()=>addProduct(product.id)">Add</button>
+                  </td>              
+                </tr>
+                </div>
+              </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
+  <div id="content_cart">
+    <h1>Cart</h1>
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Quantity
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only" v-on:click="addProduct()">Add</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200 cart">              
+                <tr id="product-cart" v-for="product in cart.items" :key="cart.items.id">         
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 name" id="name-cart" width="140">{{product.name}}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900 quantity-cart" id ="quantity-cart">{{product.quantity}}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price-cart" id="price-cart" >{{product.price}}</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart" @click="()=>removeProduct(product.id)">Remove</button>
+                  </td>             
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="">
-    <p id="cart_price-amount">
-      
-    </p>
+    <div class="">
+      <p id="cart_price-amount" >
+        Cart Price : {{cartPrice}}
+      </p>
+    </div>
   </div>
-</div>
-</div>
+  </div>
 </body>
 </html>

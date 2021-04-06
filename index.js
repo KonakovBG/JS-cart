@@ -1,170 +1,110 @@
 $(document).ready(function(){
 
-ready();
-
-function ready(){
-	var buttons = document.getElementsByClassName('addButton');
-	for (var i = 0; i < buttons.length; i++) {
-		var button = buttons[i];
-
-		button.addEventListener('click',addProduct);
-	}
-}
-
-function addRemoveButtons(){
-	var removeButtons = document.getElementsByClassName('removeButton-cart');
-	for (var i = 0; i < removeButtons.length; i++) {
-		var button = removeButtons[i];
-
-		button.addEventListener('click',removeProduct);
-	}
-}
-
-var ShopProducts = {
-	Apple: {name:'Apple', price:2, quantity:15},
-	Pear: {name:'Pear', price:3, quantity:47},
-	Grape: {name:'Grape', price:5, quantity:25},
-};
-
-const cart = { items: []};
-
-PrintPorducts();
-
-function PrintPorducts(){
-	var productsLength = Object.entries(ShopProducts).length;
-
-	for (var i = 0; i < productsLength; i++) {
-		document.getElementsByClassName('name')[i].innerHTML = Object.entries(ShopProducts)[i][1].name;
-
-		document.getElementsByClassName('price')[i].innerHTML = Object.entries(ShopProducts)[i][1].price;
-		
-		document.getElementsByClassName('stock-left')[i].innerHTML = Object.entries(ShopProducts)[i][1].quantity;
-	}
-	return true;
-}
-
-function addProduct(event){
-	var button = event.target;
-
-	var ShopItem = button.parentElement.parentElement;
-
-	var itemName = ShopItem.getElementsByClassName('name')[0].innerText;
-
-	let itemQuantity = ShopItem.getElementsByClassName('quantity')[0].value;
-
-	var itemImage = ShopItem.getElementsByClassName('image')[0].src;
-
-	var productPrice = (ShopProducts[itemName].price)*itemQuantity;
-
-	var productToAdd = {name: itemName, quantity: itemQuantity, price: productPrice, image:itemImage};
-
-	if(ShopProducts.hasOwnProperty(itemName) === true){	
-		if(itemQuantity <= ShopProducts[itemName].quantity){
-			if(ifProductAlreadyAdded(itemName) === true){
-				var productDiv = document.createElement('div');
-
-				productDiv.classList.add('product_row');
-
-				var productDivRow = `
-				<tr id="product">         
-		            <td class="px-6 py-4 whitespace-nowrap">
-		            	<div class="text-sm text-gray-900 name" id="name-cart" width="140">${productToAdd.name}</div>
-		            </td>
-		            <td class="px-6 py-4 whitespace-nowrap">
-		               	<div class="text-sm text-gray-900 quantity-cart" id ="quantity-cart" >${productToAdd.quantity}</div>
-		            </td>
-		            <td class="px-6 py-4 whitespace-nowrap">
-		                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price-cart" id="price-cart" >
-		                  ${productToAdd.price}
-		                </span>
-		            </td>
-		            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-		                <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart">Remove</button>
-		            </td>              
-	            </tr>`;
-
-	            productDiv.innerHTML = productDivRow;
-
-				cart.items.push(productToAdd);
-
-				$('#content_cart').append("",productDiv);
-
-				$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
-
-				ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
-
-				PrintPorducts();			
-			} else{
-				for (var i = 0; i < cart.items.length; i++) {
-					if(cart.items[i].name === itemName){
-
-						cart.items[i].quantity = Number(cart.items[i].quantity) + Number(itemQuantity);
-
-						cart.items[i].price = cart.items[i].quantity * (ShopProducts[itemName].price);
-
-						ShopProducts[itemName].quantity = ShopProducts[itemName].quantity - itemQuantity;
-
-						document.getElementsByClassName('quantity-cart')[i].innerHTML = cart.items[i].quantity;
-
-						document.getElementsByClassName('price-cart')[i].innerHTML = cart.items[i].price;
-
-						$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
-
-						PrintPorducts();
-					}
-				}
+var vm = new Vue({
+	el: '#app',
+	data: {
+		products: [
+			{
+				id:1,				
+				name:'Apple',
+				price:2,
+				quantity:15,
+				stock: 0			
+			},
+			{	id:2,			
+				name:'Pear',
+				price:3,
+				quantity:47,
+				stock: 0,
+			},
+			{
+				id:3,				
+				name:'Grape',
+				price:5,
+				quantity:25,
+				stock: 0
 			}
-		} else{
-				alert("Not enough quantity!");
+		],
+		cart:{ items: []},
 
-				return false;
-		}							
-	}
-	addRemoveButtons();
-}
+		cartPrice: 0
 
-function cartFinalPrice(){
-	var total = 0;
+	},
+	methods: {
+			addProduct: function(id){
+				var Index = Number(id) - Number(1);
 
-	for (var i = 0; i < cart.items.length; i++) {
-		var productPrice = cart.items[i].price;
+				var currentProduct = this.products[Index];
 
-		total = +total + +productPrice;
-	}
+				var currentPrice = Number(currentProduct.stock) * Number(currentProduct.price);
 
-	return total;
-}
+				if (currentProduct.quantity < currentProduct.stock){
+					alert("Not enough stock left!");
+				} else if(currentProduct.stock === 0){
+					alert("Please add a product!");
+				} else {
+					if(ifProductAlreadyAdded(currentProduct.id) != false){
+						var cartProduct = this.cart.items[Index];
 
-function removeProduct(event){
-	var button = event.target;
+						cartProduct.quantity = Number(cartProduct.quantity) + Number(currentProduct.stock);
 
-	var productToRemove = button.parentElement;
+						currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
 
-	var productName = productToRemove.getElementsByClassName('name')[0].innerHTML;
+						cartProduct.price = (Number(currentProduct.stock) * Number(currentProduct.price)) + cartProduct.price;
 
-	var productQuantity = productToRemove.getElementsByClassName('quantity-cart')[0].innerHTML;
+						this.cartFinalPrice();
 
-	productToRemove.remove();
+					} else{
+						var item = {id: currentProduct.id, name:currentProduct.name, price:currentPrice, quantity:currentProduct.stock};
 
-	for (var i = 0; i < cart.items.length; i++) {
-		if(productName === cart.items[i].name){
-			cart.items.splice(i,1);
-		}		
-	}
+						this.cart.items.push(item);
 
-	ShopProducts[productName].quantity = Number(ShopProducts[productName].quantity) + Number(productQuantity);
+						currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
 
-	$('#cart_price-amount').html("Cart: " + cartFinalPrice() + "$");
+						for (var i = 0; i < this.cart.items.length; i++) {
+							if(this.cart.items[i].id == id){
+								this.cart.items[i].price = Number(currentProduct.stock) * Number(currentProduct.price);
+							}
+						}
 
-	PrintPorducts();
-}
+						this.cartFinalPrice();
+					}
+
+				}		
+			},
+			removeProduct: function(id){
+				var Index = Number(id) - Number(1);
+
+				var productId = this.cart.items.map(x => {return x.id;}).indexOf(this.cart.items);	
+
+				this.products[Index].quantity = Number(this.products[Index].quantity) + Number(this.products[Index].stock);
+
+				for (var i = 0; i < this.cart.items.length; i++) {
+					if(this.cart.items[i].id == id){
+						this.cart.items.splice(i,1);
+					}
+				}		
+
+				this.cartFinalPrice();
+			},
+			cartFinalPrice: function(){
+				this.cartPrice = 0;
+
+				for (var i = 0; i < vm.cart.items.length; i++) {
+					var productPrice = vm.cart.items[i].price;
+
+					this.cartPrice = Number(this.cartPrice) + Number(productPrice);
+				} return this.cartPrice;
+			}
+		}
+});
 
 function ifProductAlreadyAdded(input){
-	for (var i = 0; i < cart.items.length; i++) {
-		if(cart.items[i].name === input){
-			return false;
+	for (var i = 0; i < vm.cart.items.length; i++) {
+		if(vm.cart.items[i].id === input){
+			return true;
 		} 
-	} return true;
+	} return false;
 }
 
 });
