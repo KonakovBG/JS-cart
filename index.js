@@ -25,17 +25,20 @@ var vm = new Vue({
 				stock: 0
 			}
 		],
-		cart:{ items: [],cartPrice:0}
+		cart: { 
+			items: []
+		}
 	},
-	computed:{
+	computed: {
 		cartFinalPrice: function(){
-			this.cartPrice = 0;
+			let total = 0;
 
 			for (var i = 0; i < this.cart.items.length; i++) {
 				var productPrice = this.cart.items[i].price;
 
-				this.cartPrice = Number(this.cartPrice) + Number(productPrice);
-			} return this.cartPrice;
+				total += Number(productPrice);
+			}
+			return total;
 		}
 	},
 	methods: {
@@ -81,7 +84,7 @@ var vm = new Vue({
 						this.cart.items.splice(i,1);
 					}
 				}		
-			},
+			}
 		}
 });
 
