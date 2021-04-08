@@ -25,10 +25,18 @@ var vm = new Vue({
 				stock: 0
 			}
 		],
-		cart:{ items: []},
+		cart:{ items: [],cartPrice:0}
+	},
+	computed:{
+		cartFinalPrice: function(){
+			this.cartPrice = 0;
 
-		cartPrice: 0
+			for (var i = 0; i < this.cart.items.length; i++) {
+				var productPrice = this.cart.items[i].price;
 
+				this.cartPrice = Number(this.cartPrice) + Number(productPrice);
+			} return this.cartPrice;
+		}
 	},
 	methods: {
 			addProduct: function(id){
@@ -38,39 +46,28 @@ var vm = new Vue({
 
 				var currentPrice = Number(currentProduct.stock) * Number(currentProduct.price);
 
-				if (currentProduct.quantity < currentProduct.stock){
-					alert("Not enough stock left!");
-				} else if(currentProduct.stock === 0){
-					alert("Please add a product!");
-				} else {
-					if(ifProductAlreadyAdded(currentProduct.id) != false){
-						var cartProduct = this.cart.items[Index];
+				if(ifProductAlreadyAdded(currentProduct.id) != false){
+					var cartProduct = this.cart.items[Index];
 
-						cartProduct.quantity = Number(cartProduct.quantity) + Number(currentProduct.stock);
+					cartProduct.quantity = Number(cartProduct.quantity) + Number(currentProduct.stock);
 
-						currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
+					currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
 
-						cartProduct.price = (Number(currentProduct.stock) * Number(currentProduct.price)) + cartProduct.price;
+					cartProduct.price = (Number(currentProduct.stock) * Number(currentProduct.price)) + cartProduct.price;
 
-						this.cartFinalPrice();
+				} else{
+					var item = {id: currentProduct.id, name:currentProduct.name, price:currentPrice, quantity:currentProduct.stock};
 
-					} else{
-						var item = {id: currentProduct.id, name:currentProduct.name, price:currentPrice, quantity:currentProduct.stock};
+					this.cart.items.push(item);
 
-						this.cart.items.push(item);
+					currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
 
-						currentProduct.quantity = Number(currentProduct.quantity) - Number(currentProduct.stock);
-
-						for (var i = 0; i < this.cart.items.length; i++) {
-							if(this.cart.items[i].id == id){
-								this.cart.items[i].price = Number(currentProduct.stock) * Number(currentProduct.price);
-							}
+					for (var i = 0; i < this.cart.items.length; i++) {
+						if(this.cart.items[i].id == id){
+							this.cart.items[i].price = Number(currentProduct.stock) * Number(currentProduct.price);
 						}
-
-						this.cartFinalPrice();
 					}
-
-				}		
+				}	
 			},
 			removeProduct: function(id){
 				var Index = Number(id) - Number(1);
@@ -84,18 +81,7 @@ var vm = new Vue({
 						this.cart.items.splice(i,1);
 					}
 				}		
-
-				this.cartFinalPrice();
 			},
-			cartFinalPrice: function(){
-				this.cartPrice = 0;
-
-				for (var i = 0; i < vm.cart.items.length; i++) {
-					var productPrice = vm.cart.items[i].price;
-
-					this.cartPrice = Number(this.cartPrice) + Number(productPrice);
-				} return this.cartPrice;
-			}
 		}
 });
 

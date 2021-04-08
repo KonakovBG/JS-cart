@@ -62,7 +62,7 @@
                     <input type="number" id="quantity" name="quantity" min="1" max="1000" class="quantity" v-model="product.stock">
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button class="text-indigo-600 hover:text-indigo-900 addButton" @click="()=>addProduct(product.id)">Add</button>
+                    <button class="text-indigo-600 hover:text-indigo-900 addButton" @click="()=>addProduct(product.id)" :disabled="product.quantity<product.stock || product.stock==0">Add</button>
                   </td>              
                 </tr>
                 </div>
@@ -119,7 +119,7 @@
 
     <div class="">
       <p id="cart_price-amount" >
-        Cart Price : {{cartPrice}}
+        Cart Price : {{cartFinalPrice}}
       </p>
     </div>
   </div>
