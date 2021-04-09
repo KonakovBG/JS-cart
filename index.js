@@ -30,27 +30,23 @@ var vm = new Vue({
 		}
 	},
 	computed: {
-		cartFinalPrice: function(){
-			let total = 0;
-
-			for (var i = 0; i < this.cart.items.length; i++) {
-				var productPrice = this.cart.items[i].price;
-
-				total += Number(productPrice);
-			}
-			return total;
+		cartTotalAmount: function(){
+			return this.cart.items.reduce(function (acc, value) {
+				return value.price + acc;
+			}, 0);
+		},
+		productPrice: function(id){
+			
 		}
 	},
 	methods: {
 			addProduct: function(id){
-				var Index = Number(id) - Number(1);
-
-				var currentProduct = this.products[Index];
+				var currentProduct = this.products.find(product => product.id === id);
 
 				var currentPrice = Number(currentProduct.stock) * Number(currentProduct.price);
 
 				if(ifProductAlreadyAdded(currentProduct.id) != false){
-					var cartProduct = this.cart.items[Index];
+					var cartProduct = this.cart.items.find(product => product.id === id);
 
 					cartProduct.quantity = Number(cartProduct.quantity) + Number(currentProduct.stock);
 
@@ -73,14 +69,10 @@ var vm = new Vue({
 				}	
 			},
 			removeProduct: function(id){
-				var Index = Number(id) - Number(1);
-
-				var productId = this.cart.items.map(x => {return x.id;}).indexOf(this.cart.items);	
-
-				this.products[Index].quantity = Number(this.products[Index].quantity) + Number(this.products[Index].stock);
+				this.products.find(product => product.id === id).quantity += Number(this.cart.items.find(product => product.id === id).quantity);	
 
 				for (var i = 0; i < this.cart.items.length; i++) {
-					if(this.cart.items[i].id == id){
+					if(this.cart.items[i].id === id){
 						this.cart.items.splice(i,1);
 					}
 				}		

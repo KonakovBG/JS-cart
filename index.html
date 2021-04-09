@@ -100,11 +100,11 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900 name" id="name-cart" width="140">{{product.name}}</div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900 quantity-cart" id ="quantity-cart">{{product.quantity}}</div>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <input type="number" id="quantity" name="quantity" min="1" max="1000" class="quantity" v-model="product.quantity">
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price-cart" id="price-cart" >{{product.price}}</span>
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 price-cart" id="price-cart">{{productPrice}}</span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button class="text-indigo-600 hover:text-indigo-900 removeButton-cart" @click="()=>removeProduct(product.id)">Remove</button>
@@ -119,7 +119,7 @@
 
     <div class="">
       <p id="cart_price-amount" >
-        Cart Price : {{cartFinalPrice}}
+        Cart Price : {{cartTotalAmount}}
       </p>
     </div>
   </div>
