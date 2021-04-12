@@ -34,9 +34,6 @@ var vm = new Vue({
 			return this.cart.items.reduce(function (acc, value) {
 				return value.price + acc;
 			}, 0);
-		},
-		productPrice: function(id){
-			
 		}
 	},
 	methods: {
@@ -45,7 +42,7 @@ var vm = new Vue({
 
 				var currentPrice = Number(currentProduct.stock) * Number(currentProduct.price);
 
-				if(ifProductAlreadyAdded(currentProduct.id) != false){
+				if (ifProductAlreadyAdded(currentProduct.id) != false){
 					var cartProduct = this.cart.items.find(product => product.id === id);
 
 					cartProduct.quantity = Number(cartProduct.quantity) + Number(currentProduct.stock);
