@@ -1,3 +1,3 @@
 # JS-cart
 
-![Screenshot](../main/img/apple.png)
+![Screenshot](../main/img/js-cart.png)
