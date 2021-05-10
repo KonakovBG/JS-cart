@@ -1,3 +1,3 @@
 # JS-cart
 
-![Screenshot](../main/img/banner.png)
+![Screenshot](../main/img/scree.png)
